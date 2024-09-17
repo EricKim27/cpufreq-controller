@@ -11,9 +11,11 @@ void limit_freq(unsigned int max, unsigned int min)
             pr_err("Failed to get CPU policy for CPU %u\n", cpu);
             return;
         }
-        if(max != plcy->cpuinfo.max_freq || min != plcy->cpuinfo.min_freq) {
-            plcy->max = max;
-            plcy->min = min;
+        pr_info("Current policy for CPU %u: min=%u, max=%u\n", cpu, plcy->min, plcy->max);
+        pr_info("Dest frequency: max %d, min %d", max, min);
+        if(max != plcy->cpuinfo.max_freq && min != plcy->cpuinfo.min_freq) {
+            plcy->max = (unsigned int)max;
+            plcy->min = (unsigned int)min;
             cpufreq_update_policy(cpu);
         }
         cpufreq_cpu_put(plcy);
